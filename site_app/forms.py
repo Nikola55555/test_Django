@@ -6,10 +6,13 @@ User = get_user_model()
 
 
 class UserRegistrationForm(UserCreationForm):
-    email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
-    password1 = forms.CharField(label='Password', widget=forms)
-    role_choise = forms.Select(choices=(('Seller', 'Seller'), ('Buyer', 'Buyer')))
+    email = forms.EmailField()
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2', 'role_choise')
+        fields = ('username', 'email', 'password1', 'password2')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].widget = forms.PasswordInput()
+        self.fields['password2'].widget = forms.PasswordInput()
